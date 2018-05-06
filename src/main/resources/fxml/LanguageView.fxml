@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import com.jfoenix.controls.*?>
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox prefHeight="462.0" prefWidth="822.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="language.LanguageViewController">
+   <children>
+      <HBox prefHeight="384.0" prefWidth="768.0" styleClass="mainFxmlClass" VBox.vgrow="ALWAYS">
+         <children>
+            <AnchorPane id="AnchorPane" prefHeight="337.0" prefWidth="822.0">
+                <stylesheets>
+                    <URL value="@/styles/languageview.css" />
+                </stylesheets>
+               <children>
+                  <VBox layoutX="75.0" layoutY="16.0" spacing="30.0" AnchorPane.topAnchor="35.0">
+                     <children>
+                        <JFXTextField fx:id="searchField" labelFloat="true" layoutX="75.0" layoutY="29.0" onKeyReleased="#doSearch" prefHeight="25.0" prefWidth="686.0" promptText="Rechercher" text="mot clé" unFocusColor="#170d0d">
+                           <font>
+                              <Font name="Calibri Bold" size="14.0" />
+                           </font>
+                        </JFXTextField>
+                        <TableView fx:id="tableLangue" layoutX="75.0" layoutY="74.0" prefHeight="270.0" prefWidth="686.0" tableMenuButtonVisible="true">
+                          <columns>
+                            <TableColumn fx:id="columnLangue" prefWidth="75.0" text="Langue Code" />
+                          </columns>
+                           <columnResizePolicy>
+                              <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                           </columnResizePolicy>
+                        </TableView>
+                        <HBox layoutX="75.0" layoutY="365.0" prefHeight="27.0" prefWidth="686.0" spacing="38.0">
+                           <children>
+                              <JFXTextField fx:id="code" labelFloat="true" layoutX="75.0" layoutY="378.0" prefHeight="25.0" prefWidth="228.0" promptText="Code" text="hello world" unFocusColor="#170d0d">
+                                 <font>
+                                    <Font name="Calibri Bold" size="14.0" />
+                                 </font>
+                              </JFXTextField>
+                              <JFXButton buttonType="RAISED" layoutX="341.0" layoutY="377.0" onAction="#addLangue" prefHeight="27.0" prefWidth="131.0" ripplerFill="#238a19" style="-fx-background-color: green;" text="Ajouter" textFill="WHITE">
+                                 <font>
+                                    <Font name="Calibri Bold" size="14.0" />
+                                 </font>
+                              </JFXButton>
+                              <JFXButton buttonType="RAISED" layoutX="511.0" layoutY="377.0" onAction="#doUpdate" prefHeight="27.0" prefWidth="106.0" ripplerFill="#301697" style="-fx-background-color: #000033;" text="Modifier" textFill="WHITE">
+                                 <font>
+                                    <Font name="Calibri Bold" size="14.0" />
+                                 </font>
+                              </JFXButton>
+                              <JFXButton buttonType="RAISED" layoutX="655.0" layoutY="377.0" onAction="#doDelete" prefHeight="27.0" prefWidth="106.0" ripplerFill="#be2121" style="-fx-background-color: red;" text="Suprimmer" textFill="WHITE">
+                                 <font>
+                                    <Font name="Calibri Bold" size="14.0" />
+                                 </font>
+                              </JFXButton>
+                           </children>
+                        </HBox>
+                     </children>
+                  </VBox>
+               </children>
+            </AnchorPane>
+         </children>
+         <VBox.margin>
+            <Insets />
+         </VBox.margin>
+      </HBox>
+   </children>
+</VBox>

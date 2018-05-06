@@ -1,0 +1,20 @@
+/*
+ * Empty Stylesheet file.
+ */
+ .mainFxmlClass{
+      -fx-background-color: #dbf3f3;
+  }
+  .titled-pane:expanded .title{
+      -fx-background-color: derive(#223333,20%);
+  }
+  .titled-pane:collapsed .title{
+      -fx-background-color: derive(#223333,80%);
+  }
+  .titled-pane:expanded .title .text{
+      -fx-fill: #fdfefe;
+      -fx-text-fill: #fdfefe;
+  }
+  .titled-pane:collapsed .title .text{
+      -fx-fill: #fdfefe;
+      -fx-text-fill: #fdfefe;
+  }

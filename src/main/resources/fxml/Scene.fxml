@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.*?>
+<?import java.lang.*?>
+<?import java.util.*?>
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane id="AnchorPane" prefHeight="291.0" prefWidth="456.0" style="-fx-background-color: #d5eade;" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/8" fx:controller="easypos.easyposserveradministrator.FXMLController">
+   <children>
+      <JFXTextField fx:id="username" focusColor="#1d6e3f" layoutX="111.0" layoutY="67.0" prefHeight="25.0" prefWidth="224.0" promptText="utilisateur" unFocusColor="#391c61" />
+      <JFXPasswordField fx:id="password" focusColor="#1d6e3f" layoutX="111.0" layoutY="133.0" prefHeight="25.0" prefWidth="224.0" promptText="mot de passe" unFocusColor="#391c61" />
+      <JFXButton buttonType="RAISED" layoutX="228.0" layoutY="211.0" onAction="#doConnect" prefHeight="25.0" prefWidth="108.0" ripplerFill="#422072" text="Se Connecter" />
+      <JFXButton buttonType="RAISED" layoutX="111.0" layoutY="211.0" onAction="#resetForm" ripplerFill="#3b1d65" text="Annuler" />
+   </children>
+</AnchorPane>
