@@ -82,8 +82,9 @@ public class LanguageViewController implements Initializable {
         
         if(!codeLangue.isEmpty() && !uniqueContraintCheck.isFound()){
             System.out.println(servicePath);
-            HttpResponse<String> response = Unirest.post(URLEncoder.encode("https://localhost:8443/lang?code="+codeLangue, "UTF-8"))
+            HttpResponse<String> response = Unirest.post("https://localhost:8443/lang")
                     .header("accept", "application/json")
+                    .field("code", codeLangue)
                     .asString();
             String langObject = new JSONObject(response.getBody()).getJSONObject("content").toString();
             System.out.println("langobject" + langObject);
@@ -100,19 +101,27 @@ public class LanguageViewController implements Initializable {
         
     }
 
+    /**
+     * When processing a delete request you must use query string method to process request param because Unirest api doesn't handle field params
+     */
+    
     @FXML
     private void doDelete(ActionEvent event) throws UnirestException, UnsupportedEncodingException {
         final LangueDto selectedItem = tableLangue.getSelectionModel().getSelectedItem();
         
-        long id = selectedItem.getId();
+        Long id = selectedItem.getId();
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION, "Veux tu confirmer la suppression de la langue sellectionner", ButtonType.OK,ButtonType.CANCEL);
         confirm.showAndWait();
         System.out.println(confirm.getResult().getText());
         if(confirm.getResult().getText().equals(ButtonType.OK.getText())){
-            HttpResponse<String> asString = Unirest.delete(URLEncoder.encode("https://localhost:8443/lang?id="+id, "UTF-8")).asString();
+            HttpResponse<String> asString = Unirest.delete("https://localhost:8443/lang")
+                    .queryString("id_langue", id)
+                    .asString();//"+URLEncoder.encode("id="+id, "UTF-8")).asString();
             System.out.println(asString.getBody());
+            if(asString.getStatus() == 200){   
             tableLangue.getItems().remove(selectedItem);
             langages.remove(selectedItem);
+            }
             
         }
     }
@@ -125,7 +134,7 @@ public class LanguageViewController implements Initializable {
             Alert alert = new Alert(Alert.AlertType.ERROR, "aucune entrée n'as ete selectionner ", ButtonType.OK);
             alert.initModality(Modality.APPLICATION_MODAL);
             alert.initOwner(((Node)event.getSource()).getScene().getWindow());
-            alert.show();
+            alert.showAndWait();
             tableLangue.requestFocus();
             return;
         }
@@ -134,7 +143,7 @@ public class LanguageViewController implements Initializable {
             Alert alert = new Alert(Alert.AlertType.ERROR, "champ code vide invalide ", ButtonType.OK);
             alert.initModality(Modality.APPLICATION_MODAL);
             alert.initOwner(((Node)event.getSource()).getScene().getWindow());
-            alert.show();
+            alert.showAndWait();
             code.requestFocus();
             return;
         }
@@ -146,12 +155,13 @@ public class LanguageViewController implements Initializable {
              Alert alert = new Alert(Alert.AlertType.ERROR, "modification avec ce code est impossible car il existe deja", ButtonType.OK);
             alert.initModality(Modality.APPLICATION_MODAL);
             alert.initOwner(((Node)event.getSource()).getScene().getWindow());
-            alert.show();
+            alert.showAndWait();
             code.requestFocus();
             return;
         }
   
         HttpResponse<String> asString = Unirest.put("https://localhost:8443/lang")//?id="+selectedItem.getId()+"&code="+code.getText())
+                .header("accept", "application/json")
                 .field("id", selectedItem.getId())
                 .field("code", code.getText())
                 .asString();
@@ -160,7 +170,7 @@ public class LanguageViewController implements Initializable {
              Alert alert = new Alert(Alert.AlertType.INFORMATION, "modification avec succes", ButtonType.OK);
             alert.initModality(Modality.APPLICATION_MODAL);
             alert.initOwner(((Node)event.getSource()).getScene().getWindow());
-            alert.show();
+            alert.showAndWait();
             
             tableLangue.getItems().get(tableLangue.getItems().indexOf(selectedItem)).setCode(code.getText());
             langages.get(langages.indexOf(selectedItem)).setCode(code.getText());
@@ -172,7 +182,7 @@ public class LanguageViewController implements Initializable {
              Alert alert = new Alert(Alert.AlertType.ERROR, "Erreur serveur", ButtonType.OK);
             alert.initModality(Modality.APPLICATION_MODAL);
             alert.initOwner(((Node)event.getSource()).getScene().getWindow());
-            alert.show();
+            alert.showAndWait();
             
             
         }
@@ -185,6 +195,7 @@ public class LanguageViewController implements Initializable {
         ObservableList<LangueDto> langueList = FXCollections.observableArrayList();
         tableLangue.setItems(langueList);
     }
+    
     private List<LangueDto> langages;
     private final String servicePath =ApplicationGlobalData.SERVER_URL+"/lang";
 
@@ -212,7 +223,7 @@ public class LanguageViewController implements Initializable {
         }else{
             List<LangueDto> searchList = new ArrayList();
             Predicate<? super LangueDto> prdct = lang-> {
-                return lang.codeProperty().getValue().contains(searchValue);
+                return lang.codeProperty().getValue().toLowerCase().contains(searchValue.toLowerCase());
             };
             searchList.addAll(langages.stream().filter(prdct).collect(Collectors.toList()));
             tableLangue.getItems().clear();

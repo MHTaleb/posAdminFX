@@ -26,7 +26,6 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 import javafx.stage.WindowEvent;
 import org.json.JSONObject;
 import pojo.LoginPojo;
@@ -51,7 +50,7 @@ public class FXMLController implements Initializable {
         String originalInput = username.getText() + ":" + password.getText();
         String value = Base64.getEncoder().encodeToString(originalInput.getBytes());
         System.out.println("value  = " + value);
-        HttpResponse<String> response = Unirest.get("http://localhost:8181/logins/login/?us_username=" + username.getText() + "&us_pwdusr=" + Crypto.getSha(password.getText()))
+        HttpResponse<String> response = Unirest.get("https://localhost:8443/logins/login/?us_username=" + username.getText() + "&us_pwdusr=" + Crypto.getSha(password.getText()))
                 .header("authorization", "Basic " + value)
                 .header("cache-control", "no-cache")
                 .asString();
@@ -85,6 +84,7 @@ public class FXMLController implements Initializable {
                 System.out.println(cooky);
                 Unirest.setDefaultHeader("Cookie", cooky);
             }
+            Unirest.setDefaultHeader("accept", "application/json");
 
             ApplicationGlobalData.setLoginPojo(readValue);
             
@@ -106,7 +106,7 @@ public class FXMLController implements Initializable {
                 public void handle(WindowEvent event) {
                     parent.show();
                     try {
-                        HttpResponse<String> asString = Unirest.get("http://localhost:8181/logins/logout").asString();
+                        HttpResponse<String> asString = Unirest.get("https://localhost:8443/logins/logout").asString();
                         Unirest.clearDefaultHeaders();
                         System.out.println(asString.getBody());
                     } catch (UnirestException ex) {

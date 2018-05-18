@@ -25,12 +25,12 @@
                         <content>
                           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="mainFxmlClass">
                                  <children>
-                                    <JFXButton layoutX="16.0" layoutY="14.0" text="maintenance niveau d'access" />
+                                    <JFXButton layoutX="16.0" layoutY="14.0" onAction="#showNiveauAccess" text="maintenance niveau d'access" />
                                     <JFXButton layoutX="28.0" layoutY="56.0" onAction="#showLangueForm" text="maintenance des langue" />
-                                    <JFXButton layoutX="33.0" layoutY="98.0" text="maintenance des pack" />
-                                    <JFXButton layoutX="17.0" layoutY="137.0" text="maintenance type utilisateur" />
-                                    <JFXButton layoutX="18.0" layoutY="177.0" text="maintenance etat utilisateur" />
-                                    <JFXButton layoutX="30.0" layoutY="218.0" text="maintenance utilisateur" />
+                                    <JFXButton layoutX="33.0" layoutY="98.0" onAction="#showPack" text="maintenance des pack" />
+                                    <JFXButton layoutX="17.0" layoutY="137.0" onAction="#showUserType" text="maintenance type utilisateur" />
+                                    <JFXButton layoutX="30.0" layoutY="218.0" onAction="#showFormUser" text="maintenance utilisateur" />
+                                    <Separator layoutX="1.0" layoutY="190.0" prefWidth="200.0" />
                                  </children>
                               </AnchorPane>
                         </content>
@@ -47,12 +47,9 @@
                         <content>
                           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" styleClass="mainFxmlClass">
                                  <children>
-                                    <JFXButton layoutX="37.0" layoutY="14.0" text="Maintenant Fonction" />
-                                    <JFXButton layoutX="41.0" layoutY="58.0" text="Maintenance Menu" />
-                                    <JFXButton layoutX="27.0" layoutY="103.0" text="Maintenance Application" />
-                                    <JFXButton layoutX="40.0" layoutY="147.0" text="Liaison Application " />
-                                    <JFXButton layoutX="57.0" layoutY="193.0" text="Liaison Menu" />
-                                    <JFXButton layoutX="50.0" layoutY="238.0" text="Liaison Fonction" />
+                                    <JFXButton layoutX="37.0" layoutY="14.0" onAction="#showFonction" text="Maintenant Fonction" />
+                                    <JFXButton layoutX="41.0" layoutY="58.0" onAction="#showMenu" text="Maintenance Menu" />
+                                    <JFXButton layoutX="27.0" layoutY="103.0" onAction="#showApplication" text="Maintenance Application" />
                                  </children>
                               </AnchorPane>
                         </content>
@@ -63,16 +60,13 @@
             </VBox>
             <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
                <children>
-                  <HBox>
+                  <HBox prefHeight="26.0" prefWidth="822.0" VBox.vgrow="NEVER">
                      <children>
-                        <HBox HBox.hgrow="ALWAYS">
-                           <children>
-                              <Label fx:id="currentUser" prefHeight="26.0" prefWidth="246.0" text="Label" />
-                           </children>
-                           <HBox.margin>
-                              <Insets left="17.0" />
-                           </HBox.margin>
-                        </HBox>
+                        <Label fx:id="currentUser" alignment="CENTER" prefHeight="26.0" prefWidth="828.0" text="Label" textAlignment="CENTER">
+                           <font>
+                              <Font name="Calibri Bold" size="15.0" />
+                           </font>
+                        </Label>
                      </children>
                   </HBox>
                   <VBox fx:id="container" prefHeight="200.0" prefWidth="100.0" VBox.vgrow="ALWAYS">

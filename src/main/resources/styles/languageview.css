@@ -6,12 +6,17 @@
     -fx-background-color: #005555;
     -fx-text-fill: #fdfefe;
   }
-.table-view:row-selection:constrained-resize .column-header-background .nested-column-header .table-column:last-visible .label{
+.tree-table-view:row-selection:constrained-resize .column-header-background .nested-column-header .table-column .label,
+.table-view:row-selection:constrained-resize .column-header-background .nested-column-header .table-column .label
+{
     -fx-background-color: #223333;
     -fx-text-fill: #fdfefe;
   }
-  
-  .table-view:row-selection:constrained-resize .column-header-background .nested-column-header .table-column:last-visible,
+  .tree-table-view:row-selection:constrained-resize .column-header-background .nested-column-header .table-column,
+  .tree-table-view:row-selection:constrained-resize .column-header-background .filler,
+  .tree-table-view:row-selection:constrained-resize .column-header-background .show-hide-columns-button,
+  .tree-table-view:row-selection:constrained-resize .virtual-flow .scroll-bar:vertical,
+  .table-view:row-selection:constrained-resize .column-header-background .nested-column-header .table-column,
   .table-view:row-selection:constrained-resize .column-header-background .filler,
   .table-view:row-selection:constrained-resize .column-header-background .show-hide-columns-button,
   .table-view:row-selection:constrained-resize .virtual-flow .scroll-bar:vertical{
@@ -59,4 +64,16 @@
   .mainFxmlClass{
       -fx-background-color: #dbf3f3;
   }
+  .scroll-pane, .scroll-pane .scroll-bar:horizontal,.scroll-pane .scroll-bar:vertical,.scroll-pane .viewport{
+      -fx-background-color: #dbf3f3;
+  }
   
+  .scroll-pane .scroll-bar:horizontal .thumb{
+      -fx-background-color: #6f8e8e;
+      -fx-background-radius: 0px;   
+  }
+  
+  .scroll-pane .scroll-bar:horizontal .increment-button .increment-arrow{
+      -fx-background-color: #6f8e8e;
+      -fx-background-radius: 0px;   
+  }

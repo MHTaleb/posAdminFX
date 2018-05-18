@@ -6,15 +6,14 @@
 package board;
 
 import application.data.ApplicationGlobalData;
+import application.data.GenericFXController;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 /**
@@ -22,7 +21,7 @@ import javafx.scene.layout.VBox;
  *
  * @author taleb
  */
-public class BoardController implements Initializable {
+public class BoardController extends GenericFXController implements Initializable {
 
     @FXML
     private Label currentUser;
@@ -41,23 +40,44 @@ public class BoardController implements Initializable {
 
     @FXML
     private void showLangueForm(ActionEvent event) throws IOException {
-        
-        VBox languageForm = FXMLLoader.load(getClass().getResource("/fxml/LanguageView.fxml"));
-        container.getChildren().clear();
-        final HBox form = (HBox) languageForm.getChildren().get(0);
-        container.getChildren().add(form);
-        container.setBackground(languageForm.getBackground());
-      form.setMinHeight(container.getHeight());
-      form.setMinWidth(container.getWidth());
-      form.setMaxHeight(container.getHeight());
-      form.setMaxWidth(container.getWidth());
-      form.prefWidthProperty().bind(container.widthProperty());
-      form.prefHeightProperty().bind(container.heightProperty());
-        form.autosize();
-        container.autosize();
-        
-        
+        final String formFXPath = "/fxml/LanguageView.fxml";    
+        showForm(container , formFXPath);
+    }
+
+   
+
+    @FXML
+    private void showNiveauAccess(ActionEvent event)throws IOException {
+        final String formFXPath = "/fxml/NiveauAccesView.fxml";    
+        showForm(container ,formFXPath);
         
     }
+
+    @FXML
+    private void showPack(ActionEvent event) {
+    }
+
+    @FXML
+    private void showUserType(ActionEvent event) {
+    }
+
+    @FXML
+    private void showFormUser(ActionEvent event) {
+    }
+
+    @FXML
+    private void showFonction(ActionEvent event) {
+    }
+
+    @FXML
+    private void showMenu(ActionEvent event) {
+    }
+
+    @FXML
+    private void showApplication(ActionEvent event) throws IOException {
+        final String formFXPath = "/fxml/application/Application.fxml";    
+        showForm(container ,formFXPath);
+    }
+
     
 }

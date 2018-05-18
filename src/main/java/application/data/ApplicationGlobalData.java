@@ -13,7 +13,7 @@ import pojo.LoginPojo;
  */
 public class ApplicationGlobalData {
     
-    public static final String SERVER_URL="http://localhost:8181/";
+    public static final String SERVER_URL="https://localhost:8443/";
     
     private  static LoginPojo loginPojo;
 

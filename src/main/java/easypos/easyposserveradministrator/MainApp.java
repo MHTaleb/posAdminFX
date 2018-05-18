@@ -6,7 +6,6 @@ import static javafx.application.Application.launch;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.apache.http.client.HttpClient;
 import org.apache.http.impl.client.BasicCookieStore;
@@ -24,11 +23,15 @@ public class MainApp extends Application {
 
     @Override
     public void start(Stage stage) throws Exception {
-        
+        try {
+            
         HttpClient httpClient = HttpClients.custom()
                 .setDefaultCookieStore(new BasicCookieStore())
                 .build();
         Unirest.setHttpClient(httpClient);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/Scene.fxml"));
         Scene scene = new Scene(root);

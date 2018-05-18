@@ -14,19 +14,19 @@
    <children>
       <HBox prefHeight="384.0" prefWidth="768.0" styleClass="mainFxmlClass" VBox.vgrow="ALWAYS">
          <children>
-            <AnchorPane id="AnchorPane" prefHeight="337.0" prefWidth="822.0">
+            <AnchorPane id="AnchorPane" prefHeight="337.0" prefWidth="822.0" HBox.hgrow="ALWAYS">
                 <stylesheets>
                     <URL value="@/styles/languageview.css" />
                 </stylesheets>
                <children>
-                  <VBox layoutX="75.0" layoutY="16.0" spacing="30.0" AnchorPane.topAnchor="35.0">
+                  <VBox layoutX="75.0" layoutY="16.0" spacing="30.0" AnchorPane.bottomAnchor="35.0" AnchorPane.leftAnchor="61.0" AnchorPane.rightAnchor="61.0" AnchorPane.topAnchor="35.0">
                      <children>
                         <JFXTextField fx:id="searchField" labelFloat="true" layoutX="75.0" layoutY="29.0" onKeyReleased="#doSearch" prefHeight="25.0" prefWidth="686.0" promptText="Rechercher" text="mot clé" unFocusColor="#170d0d">
                            <font>
                               <Font name="Calibri Bold" size="14.0" />
                            </font>
                         </JFXTextField>
-                        <TableView fx:id="tableLangue" layoutX="75.0" layoutY="74.0" prefHeight="270.0" prefWidth="686.0" tableMenuButtonVisible="true">
+                        <TableView fx:id="tableLangue" layoutX="75.0" layoutY="74.0" prefHeight="270.0" prefWidth="686.0" tableMenuButtonVisible="true" VBox.vgrow="ALWAYS">
                           <columns>
                             <TableColumn fx:id="columnLangue" prefWidth="75.0" text="Langue Code" />
                           </columns>
@@ -36,7 +36,7 @@
                         </TableView>
                         <HBox layoutX="75.0" layoutY="365.0" prefHeight="27.0" prefWidth="686.0" spacing="38.0">
                            <children>
-                              <JFXTextField fx:id="code" labelFloat="true" layoutX="75.0" layoutY="378.0" prefHeight="25.0" prefWidth="228.0" promptText="Code" text="hello world" unFocusColor="#170d0d">
+                              <JFXTextField fx:id="code" labelFloat="true" layoutX="75.0" layoutY="378.0" prefHeight="25.0" prefWidth="228.0" promptText="Code" text="hello world" unFocusColor="#170d0d" HBox.hgrow="ALWAYS">
                                  <font>
                                     <Font name="Calibri Bold" size="14.0" />
                                  </font>
