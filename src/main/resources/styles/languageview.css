@@ -2,6 +2,33 @@
  * Empty Stylesheet file.
  */
 
+.jfx-date-picker > .jfx-text-field {
+    -jfx-label-float: true;
+}
+.jfx-text-field {
+    -jfx-label-float: true;
+}
+.jfx-combo-box .combo-box-button-container .prompt-text{
+    -fx-prompt-text-fill: #6f8e8e;
+    -fx-text-fill: #6f8e8e;
+    -fx-font-family: Calibri ;
+    -fx-font-weight: bold;
+    -fx-font-weight: 12px ;
+}
+.jfx-combo-box .combo-box-button-container {
+    -fx-prompt-text-fill: #6f8e8e;
+    -fx-font-family: Calibri ;
+    -fx-font-weight: bold;
+    -fx-font-weight: 12px ;
+}
+.jfx-combo-box{
+    -fx-prompt-text-fill: #6f8e8e;
+    -fx-font-family: Calibri ;
+    -fx-font-weight: bold;
+    -fx-font-weight: 12px ;
+}
+
+
 .table-view {
     -fx-background-color: #005555;
     -fx-text-fill: #fdfefe;

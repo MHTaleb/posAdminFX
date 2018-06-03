@@ -78,11 +78,14 @@ public class FXMLController implements Initializable {
             } catch (IOException ex) {
                 Logger.getLogger(FXMLController.class.getName()).log(Level.SEVERE, null, ex);
             }
-
-            List<String> cookies = response.getHeaders().get("Set-Cookie");
-            for (String cooky : cookies) {
-                System.out.println(cooky);
-                Unirest.setDefaultHeader("Cookie", cooky);
+            try {
+                List<String> cookies = response.getHeaders().get("Set-Cookie");
+                for (String cooky : cookies) {
+                    System.out.println(cooky);
+                    Unirest.setDefaultHeader("Cookie", cooky);
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
             Unirest.setDefaultHeader("accept", "application/json");
 

@@ -5,6 +5,13 @@
  */
 package app;
 
+import tdo.component.ComponentDataTDO;
+import rest.dto.component.ComponentForm;
+import rest.dto.component.ComponentDataForm;
+import rest.dto.component.OneComponentServerResponse;
+import rest.dto.component.ComponentData;
+import rest.dto.component.ComponentContent;
+import rest.dto.component.ComponentDataIDListServerAnswer;
 import application.data.ApplicationGlobalData;
 import application.data.GenericFXController;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -35,11 +42,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
  */
 public class ApplicationFormAddController extends GenericFXController implements Initializable {
 
-    public static final boolean ADD_MODE = true;
-    public static final boolean EDIT_MODE = false;
 
-    private static final String APPLICATION_SERVICE_URL = ApplicationGlobalData.SERVER_URL + "/applications";
-    private static final String APPLICATION_DATA_SERVICE_URL = ApplicationGlobalData.SERVER_URL + "/components/datas";
 
     private static boolean mode = ADD_MODE;
     private static Long app_id;
@@ -53,13 +56,14 @@ public class ApplicationFormAddController extends GenericFXController implements
     @FXML
     private JFXTextField attVal;
     @FXML
-    private TableView<AppDataAttTDO> tableAtributes;
+    private TableView<ComponentDataTDO> tableAtributes;
     @FXML
-    private TableColumn<AppDataAttTDO, String> colAttCode;
+    private TableColumn<ComponentDataTDO, String> colAttCode;
     @FXML
-    private TableColumn<AppDataAttTDO, String> colAttTitle;
+    private TableColumn<ComponentDataTDO, String> colAttTitle;
     @FXML
-    private TableColumn<AppDataAttTDO, String> colAttVal;
+    private TableColumn<ComponentDataTDO, String> colAttVal;
+    private ComponentContent applications;
 
     /**
      * Initializes the controller class.
@@ -68,11 +72,11 @@ public class ApplicationFormAddController extends GenericFXController implements
     public void initialize(URL url, ResourceBundle rb) {
         try {
             // TODO
+            initTable();
+            initValidation();
             if (mode == EDIT_MODE) {
                 initData();
             }
-            initTable();
-            initValidation();
 
         } catch (UnirestException ex) {
             Logger.getLogger(ApplicationFormAddController.class.getName()).log(Level.SEVERE, null, ex);
@@ -105,12 +109,13 @@ public class ApplicationFormAddController extends GenericFXController implements
                 }
 
             }
+            ApplicationController.doSycnh = true;
         }
 
     }
 
     public void postApplicationDetails() throws UnirestException, IOException {
-        final ObservableList<AppDataAttTDO> items = tableAtributes.getItems();
+        final ObservableList<ComponentDataTDO> items = tableAtributes.getItems();
         final List<ComponentDataForm> componentDataFormValues = new ArrayList();
         items.stream().forEach(item -> {
             final ComponentDataForm requestItem = new ComponentDataForm();
@@ -125,9 +130,9 @@ public class ApplicationFormAddController extends GenericFXController implements
         requestItem.setAttTitle("appName");
         requestItem.setAttVal(appName.getText());
         componentDataFormValues.add(requestItem);
-        HttpResponse<String> asString = Unirest.post(APPLICATION_DATA_SERVICE_URL)
-                //.header("content-type", "application/json")
-                .queryString("componentDataFormValues", componentDataFormValues)
+        HttpResponse<String> asString = Unirest.post(COMPONENT_DATA_SERVICE_URL)
+                .header("content-type", "application/json")
+                .body(componentDataFormValues)
                 .asString();
         final int status = asString.getStatus();
         System.out.println(status);
@@ -136,9 +141,9 @@ public class ApplicationFormAddController extends GenericFXController implements
         if (status == 200) {
             List<Long> applicationDetailIDs;
             final ObjectMapper objectMapper = new ObjectMapper();
-            applicationDetailIDs = objectMapper.readValue(idsAsString, ADServerAddAnswer.class).getContent();
+            applicationDetailIDs = objectMapper.readValue(idsAsString, ComponentDataIDListServerAnswer.class).getContent();
             ComponentForm componentForm = new ComponentForm();
-            componentForm.setApp_name("");
+            componentForm.setComponent_name("");
             componentForm.setId_datas(applicationDetailIDs);
             componentForm.setId_fils(new ArrayList<>());
             componentForm.setId_parents(new ArrayList<>());
@@ -154,15 +159,38 @@ public class ApplicationFormAddController extends GenericFXController implements
     public static void setMode(boolean mode, Long app_ID) {
         ApplicationFormAddController.mode = mode;
         ApplicationFormAddController.app_id = app_ID;
-
+        System.out.println("with app id = "+app_ID);
     }
 
     private void initData() throws UnirestException {
-        Unirest.get(ApplicationGlobalData.SERVER_URL + APPLICATION_SERVICE_URL)
-                .queryString("id", app_id).asString();
+        try {
+            HttpResponse<String> asString = Unirest.get( APPLICATION_SERVICE_URL +"/{app_id}")
+                    .routeParam("app_id", ""+app_id).asString();
+            System.out.println(asString.getStatus());
+            System.out.println(asString.getBody());
+            OneComponentServerResponse applicationServerResponse = new ObjectMapper().readValue(asString.getBody(), OneComponentServerResponse.class);
+            applications = applicationServerResponse.getContent();
+            Predicate<? super ComponentData> appNamePredicate = appData -> {return appData.getCmpAttrLabel().equals("appName");};
+            
+            appName.setText(applications.getCmpDatas().stream().filter(appNamePredicate).findFirst().get().getCmpAttrValue());
+            Predicate<? super ComponentData> notAppNamePredicate = appData -> {return !appData.getCmpAttrLabel().equals("appName");};
+            tableAtributes.getItems().clear();
+            applications.getCmpDatas().stream().filter(notAppNamePredicate).forEach(appData -> {
+                final ComponentDataTDO appDataAttTDO = new ComponentDataTDO();
+                appDataAttTDO.setAttCode(appData.getCmpAttrCode());
+                appDataAttTDO.setAttTitle(appData.getCmpAttrLabel());
+                appDataAttTDO.setAttValue(appData.getCmpAttrValue());
+                tableAtributes.getItems().add(appDataAttTDO);
+            });
+            
+        } catch (IOException ex) {
+            Logger.getLogger(ApplicationFormAddController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        
     }
 
-    private List<AppDataAttTDO> globalList = new ArrayList();
+    private List<ComponentDataTDO> globalList = new ArrayList();
 
     private void initTable() {
         tableAtributes.getItems().clear();
@@ -183,8 +211,8 @@ public class ApplicationFormAddController extends GenericFXController implements
 
     @FXML
     private void doAddAttribut(ActionEvent event) {
-        final AppDataAttTDO item = new AppDataAttTDO().withCode(attCode.getText()).withTitle(attTitle.getText()).withValue(attVal.getText());
-        Predicate<? super AppDataAttTDO> prdct = ada -> {
+        final ComponentDataTDO item = new ComponentDataTDO().withCode(attCode.getText()).withTitle(attTitle.getText()).withValue(attVal.getText());
+        Predicate<? super ComponentDataTDO> prdct = ada -> {
             return ada.getAttCode().equals(item.getAttCode()) || ada.getAttTitle().equals(item.getAttTitle());
         };
         if (tableAtributes.getItems().stream().filter(prdct).toArray().length == 0) {
@@ -193,7 +221,7 @@ public class ApplicationFormAddController extends GenericFXController implements
     }
 
     private void updateApplicationDetails() throws UnirestException, IOException {
-        final ObservableList<AppDataAttTDO> items = tableAtributes.getItems();
+        final ObservableList<ComponentDataTDO> items = tableAtributes.getItems();
         final List<ComponentDataForm> componentDataFormValues = new ArrayList();
         items.stream().forEach(item -> {
             final ComponentDataForm requestItem = new ComponentDataForm();
@@ -208,9 +236,9 @@ public class ApplicationFormAddController extends GenericFXController implements
         requestItem.setAttTitle("appName");
         requestItem.setAttVal(appName.getText());
         componentDataFormValues.add(requestItem);
-        HttpResponse<String> asString = Unirest.post(APPLICATION_DATA_SERVICE_URL)
-                //.header("content-type", "application/json")
-                .queryString("componentDataFormValues", componentDataFormValues)
+        HttpResponse<String> asString = Unirest.post(COMPONENT_DATA_SERVICE_URL)
+                .header("content-type", "application/json")
+                .body(componentDataFormValues)
                 .asString();
         final int status = asString.getStatus();
         System.out.println(status);
@@ -219,9 +247,9 @@ public class ApplicationFormAddController extends GenericFXController implements
         if (status == 200) {
             List<Long> applicationDetailIDs;
             final ObjectMapper objectMapper = new ObjectMapper();
-            applicationDetailIDs = objectMapper.readValue(idsAsString, ADServerAddAnswer.class).getContent();
+            applicationDetailIDs = objectMapper.readValue(idsAsString, ComponentDataIDListServerAnswer.class).getContent();
             ComponentForm componentForm = new ComponentForm();
-            componentForm.setApp_name("");
+            componentForm.setComponent_name("");
             componentForm.setId_datas(applicationDetailIDs);
             componentForm.setId_fils(new ArrayList<>());
             componentForm.setId_parents(new ArrayList<>());

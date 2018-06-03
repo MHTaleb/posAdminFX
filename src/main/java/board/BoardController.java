@@ -54,7 +54,9 @@ public class BoardController extends GenericFXController implements Initializabl
     }
 
     @FXML
-    private void showPack(ActionEvent event) {
+    private void showPack(ActionEvent event) throws IOException {
+        final String formFXPath = "/fxml/pack/PackMain.fxml";    
+        showForm(container ,formFXPath);
     }
 
     @FXML
@@ -62,15 +64,22 @@ public class BoardController extends GenericFXController implements Initializabl
     }
 
     @FXML
-    private void showFormUser(ActionEvent event) {
+    private void showFormUser(ActionEvent event) throws IOException {
+        
+        final String formFXPath = "/fxml/user/UserAccountMain.fxml";    
+        showForm(container ,formFXPath);
     }
 
     @FXML
-    private void showFonction(ActionEvent event) {
+    private void showFonction(ActionEvent event) throws IOException {
+        final String formFXPath = "/fxml/fonction/FonctionMain.fxml";    
+        showForm(container ,formFXPath);
     }
 
     @FXML
-    private void showMenu(ActionEvent event) {
+    private void showMenu(ActionEvent event) throws IOException {
+        final String formFXPath = "/fxml/menu/MenuMain.fxml";    
+        showForm(container ,formFXPath);
     }
 
     @FXML

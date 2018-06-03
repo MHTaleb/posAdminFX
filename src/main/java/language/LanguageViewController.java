@@ -6,6 +6,7 @@
 package language;
 
 import application.data.ApplicationGlobalData;
+import application.data.GenericFXController;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jfoenix.controls.JFXTextField;
 import com.mashape.unirest.http.HttpResponse;
@@ -14,7 +15,6 @@ import com.mashape.unirest.http.exceptions.UnirestException;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -44,7 +44,7 @@ import org.json.JSONObject;
  *
  * @author taleb
  */
-public class LanguageViewController implements Initializable {
+public class LanguageViewController extends GenericFXController implements Initializable {
 
     @FXML
     private TableView<LangueDto> tableLangue;
@@ -82,7 +82,7 @@ public class LanguageViewController implements Initializable {
         
         if(!codeLangue.isEmpty() && !uniqueContraintCheck.isFound()){
             System.out.println(servicePath);
-            HttpResponse<String> response = Unirest.post("https://localhost:8443/lang")
+            HttpResponse<String> response = Unirest.post(LANGUE_SERVICE_URL)
                     .header("accept", "application/json")
                     .field("code", codeLangue)
                     .asString();
@@ -114,7 +114,7 @@ public class LanguageViewController implements Initializable {
         confirm.showAndWait();
         System.out.println(confirm.getResult().getText());
         if(confirm.getResult().getText().equals(ButtonType.OK.getText())){
-            HttpResponse<String> asString = Unirest.delete("https://localhost:8443/lang")
+            HttpResponse<String> asString = Unirest.delete(LANGUE_SERVICE_URL)
                     .queryString("id_langue", id)
                     .asString();//"+URLEncoder.encode("id="+id, "UTF-8")).asString();
             System.out.println(asString.getBody());
@@ -125,6 +125,7 @@ public class LanguageViewController implements Initializable {
             
         }
     }
+    
 
     @FXML
     private void doUpdate(ActionEvent event) throws UnirestException {
@@ -160,7 +161,7 @@ public class LanguageViewController implements Initializable {
             return;
         }
   
-        HttpResponse<String> asString = Unirest.put("https://localhost:8443/lang")//?id="+selectedItem.getId()+"&code="+code.getText())
+        HttpResponse<String> asString = Unirest.put(LANGUE_SERVICE_URL)//?id="+selectedItem.getId()+"&code="+code.getText())
                 .header("accept", "application/json")
                 .field("id", selectedItem.getId())
                 .field("code", code.getText())

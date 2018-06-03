@@ -1,6 +1,9 @@
 package easypos.easyposserveradministrator;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.mashape.unirest.http.ObjectMapper;
 import com.mashape.unirest.http.Unirest;
+import java.io.IOException;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.fxml.FXMLLoader;
@@ -32,7 +35,26 @@ public class MainApp extends Application {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        
+        Unirest.setObjectMapper(new ObjectMapper() {
+    private com.fasterxml.jackson.databind.ObjectMapper jacksonObjectMapper
+                = new com.fasterxml.jackson.databind.ObjectMapper();
+
+    public <T> T readValue(String value, Class<T> valueType) {
+        try {
+            return jacksonObjectMapper.readValue(value, valueType);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public String writeValue(Object value) {
+        try {
+            return jacksonObjectMapper.writeValueAsString(value);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+});
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/Scene.fxml"));
         Scene scene = new Scene(root);
         scene.getStylesheets().add("/styles/Styles.css");

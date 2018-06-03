@@ -28,23 +28,43 @@ import javafx.stage.Stage;
  *
  * @author taleb
  */
-public  class GenericFXController {
+public class GenericFXController {
+
+    //global header values
+    public final String HEADER_CONTENT_TYPE_APPLICATION_JSON = "application/json";
+    public final String HEADER_CONTENT_TYPE = "content-type";
+
+    // global data between all controller
+    public static final boolean ADD_MODE = true;
+    public static final boolean EDIT_MODE = false;
+
+    public final String USERS_SERVER_URL = ApplicationGlobalData.SERVER_URL + "/users";
+    public final String PACK_SERVER_URL = ApplicationGlobalData.SERVER_URL + "/packs";
+    public final String ACL_URL = ApplicationGlobalData.SERVER_URL + "/acl";
+    public final String ROLE_URL = ApplicationGlobalData.SERVER_URL + "/roles";
+    public final String LANGUE_SERVICE_URL = ApplicationGlobalData.SERVER_URL + "/lang";
+    public final String FONCTION_SERVICE_URL = ApplicationGlobalData.SERVER_URL + "/fonctions";
+    public final String APPLICATION_SERVICE_URL = ApplicationGlobalData.SERVER_URL + "/applications";
+    public final String MENU_SERVICE_URL = ApplicationGlobalData.SERVER_URL + "/menus";
+    public final String COMPONENT_DATA_SERVICE_URL = ApplicationGlobalData.SERVER_URL + "/components/datas";
+    //-- end global data between all controller
+
     private final FXMLLoader fXMLLoader = new FXMLLoader();
 
     private final List<Control> requiredControles = new ArrayList();
-    
-    public void addRequiredElement(Control control){
+
+    public void addRequiredElement(Control control) {
         requiredControles.add(control);
     }
-    
-    public boolean validate(){
-        boolean result  = true;
-        if (!requiredControles.stream().filter((control) -> (control instanceof  TextInputControl)).map((control) -> (TextInputControl) control).noneMatch((inputControl) -> (inputControl.getText().isEmpty()))) {
+
+    public boolean validate() {
+        boolean result = true;
+        if (!requiredControles.stream().filter((control) -> (control instanceof TextInputControl)).map((control) -> (TextInputControl) control).noneMatch((inputControl) -> (inputControl.getText().isEmpty()))) {
             return false;
         }
         return result;
     }
-    
+
     public void showForm(final String formFXPath) {
         try {
             Stage stage = new Stage();
@@ -64,7 +84,6 @@ public  class GenericFXController {
 
             Parent root = fXMLLoader.load(getClass().getResource(formFXPath));
             Scene scene = new Scene(root);
-            
 
             stage.setScene(scene);
             stage.initModality(Modality.APPLICATION_MODAL);
@@ -95,6 +114,12 @@ public  class GenericFXController {
         alert.initOwner(((Node) event.getSource()).getScene().getWindow());
         alert.setContentText(messageError);
         alert.showAndWait();
+    }
+
+    public void showErrorAlert(final String messageError) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setContentText(messageError);
+        alert.show();
     }
 
     public void showInformAlert(ActionEvent event, final String message) {

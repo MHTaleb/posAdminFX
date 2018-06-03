@@ -10,7 +10,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox prefHeight="503.0" prefWidth="827.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="user.state.NiveauAccesViewController">
+<VBox prefHeight="503.0" prefWidth="827.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="acl.NiveauAccesViewController">
    <children>
       <HBox prefHeight="499.0" prefWidth="879.0" styleClass="mainFxmlClass" VBox.vgrow="ALWAYS">
          <children>
